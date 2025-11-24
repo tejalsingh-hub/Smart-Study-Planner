@@ -1,4 +1,4 @@
-# src/scheduler.py
+
 from datetime import datetime, timedelta, date
 from typing import List, Dict
 from .models import Task
@@ -14,7 +14,6 @@ def generate_schedule(start_date: date, daily_hours: float, tasks: List[Task], d
     - Return schedule: {date: [ {"task_id":..., "title":..., "hours":..., "subject":...}, ... ] }
     """
     pending = [t for t in tasks if t.remaining() > 1e-6]
-    # sort pending list by deadline then by higher priority
     pending.sort(key=lambda t: (parse_date(t.deadline), -t.priority))
     schedule = {}
     day_list = [start_date + timedelta(days=i) for i in range(days)]
@@ -22,7 +21,6 @@ def generate_schedule(start_date: date, daily_hours: float, tasks: List[Task], d
     for d in day_list:
         cap = daily_hours
         schedule[d] = []
-        # re-sort daily to pick up any changed priorities
         pending.sort(key=lambda t: (parse_date(t.deadline), -t.priority))
         i = 0
         while cap > 1e-6 and i < len(pending):
@@ -32,9 +30,7 @@ def generate_schedule(start_date: date, daily_hours: float, tasks: List[Task], d
                 i += 1
                 continue
             days_left = (parse_date(t.deadline) - d).days
-            # urgency factor: more urgent tasks are treated slightly preferentially
             urgency_factor = 2.0 if days_left <= 0 else (1.5 if days_left <= 2 else 1.0)
-            # simple greedy assign: min(remaining, cap)
             assign = min(rem, cap)
             t.completed_hours += assign
             cap -= assign
