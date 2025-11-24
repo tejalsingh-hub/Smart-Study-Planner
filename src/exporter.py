@@ -1,10 +1,9 @@
-# src/exporter.py
+
 import csv
 from datetime import date
 from typing import Dict, List
 
 def export_schedule_csv(schedule: Dict[date, List], filename="report/schedule.csv"):
-    # Ensure report folder exists
     import os
     os.makedirs("report", exist_ok=True)
 
