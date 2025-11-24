@@ -9,18 +9,15 @@ def main():
     parser = argparse.ArgumentParser(description="Smart Study Planner CLI")
     sub = parser.add_subparsers(dest="command")
 
-    # Add task
     add = sub.add_parser("add")
     add.add_argument("--title", required=True)
     add.add_argument("--subject", required=True)
     add.add_argument("--est_hours", required=True, type=float)
     add.add_argument("--priority", required=True, type=int)
     add.add_argument("--deadline", required=True)
-
-    # List tasks
+    
     sub.add_parser("list")
 
-    # Generate schedule
     gen = sub.add_parser("generate")
     gen.add_argument("--daily_hours", required=True, type=float)
     gen.add_argument("--days", required=True, type=int)
@@ -66,7 +63,6 @@ def main():
             for it in items:
                 print(f"  - {it['title']} ({it['subject']}) → {it['hours']} hrs")
 
-        # Export files
         export_schedule_csv(schedule)
         plot_workload(schedule)
         print("\nFiles generated in 'report/' folder:")
