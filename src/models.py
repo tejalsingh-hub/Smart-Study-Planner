@@ -8,8 +8,8 @@ class Task:
     title: str
     subject: str
     est_hours: float
-    priority: int          # 1 (low) - 5 (high)
-    deadline: str          # ISO date: YYYY-MM-DD
+    priority: int          
+    deadline: str         
     completed_hours: float = 0.0
     notes: Optional[str] = None
 
